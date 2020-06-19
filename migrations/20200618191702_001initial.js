@@ -1,8 +1,8 @@
 exports.up = async (knex) => {
   await knex.schema.createTable("descriptions", (table) => {
     table.integer("product_id").notNullable().primary();
-    table.string("title").notNullable();
-    table.string("description").notNullable();
+    table.text("title", "longtext").notNullable();
+    table.text("description", "longtext").notNullable();
   });
 
   await knex.schema.createTable("genres", (table) => {

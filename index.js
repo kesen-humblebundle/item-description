@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
+const faker = require("faker");
 
 const app = express();
 const db = require("./data/db.js");
