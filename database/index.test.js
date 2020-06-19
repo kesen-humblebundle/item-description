@@ -1,3 +1,7 @@
-test("runs the initial test", () => {
-    
+
+
+describe("DB connection", (req, res) => {
+    test("Connects to the database", () => {
+
+    });
 });
