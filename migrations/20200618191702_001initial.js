@@ -1,17 +1,17 @@
-exports.up = function (knex) {
-  knex.schema.createTable("descriptions", (table) => {
+exports.up = async (knex) => {
+  await knex.schema.createTable("descriptions", (table) => {
     table.integer("product_id").notNullable().primary();
     table.string("title").notNullable();
     table.string("description").notNullable();
   });
 
-  knex.schema.createTable("genres", (table) => {
-    table.increments().primary();
+  await knex.schema.createTable("genres", (table) => {
+    table.increments("id").primary();
     table.string("genre_name").notNullable();
   });
 
-  knex.schema.createTable("games_genres", (table) => {
-    table.increments().primary();
+  await knex.schema.createTable("games_genres", (table) => {
+    table.increments("id").primary();
     table
       .integer("product_id")
       .references("product_id")
@@ -21,8 +21,8 @@ exports.up = function (knex) {
   });
 };
 
-exports.down = function (knex) {
-  knex.schema.dropTableIfExists("games_genres");
-  knex.schema.dropTableIfExists("genres");
-  knex.schema.dropTableIfExists("descriptions");
+exports.down = async (knex) => {
+  await knex.schema.dropTableIfExists("games_genres");
+  await knex.schema.dropTableIfExists("genres");
+  await knex.schema.dropTableIfExists("descriptions");
 };
