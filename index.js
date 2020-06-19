@@ -6,6 +6,7 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
+const db = require("./database/index");
 
 const PORT = process.env.PORT;
 
