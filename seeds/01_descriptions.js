@@ -11,6 +11,10 @@ exports.seed = function (knex) {
 
       for (let i = 1; i <= 100; i++) {
         let title = faker.fake("{{lorem.word}} {{lorem.word}} {{lorem.words}}");
+        title = title
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
         let description = faker.fake("{{lorem.paragraphs}}");
 
         games.push({

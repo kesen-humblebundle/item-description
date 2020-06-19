@@ -6,8 +6,8 @@ exports.up = async (knex) => {
   });
 
   await knex.schema.createTable("genres", (table) => {
-    table.increments("id").primary();
-    table.string("genre_name").notNullable();
+    table.integer("id").primary();
+    table.string("name").notNullable();
   });
 
   await knex.schema.createTable("games_genres", (table) => {

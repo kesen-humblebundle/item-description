@@ -13,6 +13,9 @@ module.exports = {
     migrations: {
       directory: "./migrations",
     },
+    seeds: {
+      directory: "./seeds",
+    },
   },
 
   production: {
@@ -25,7 +28,10 @@ module.exports = {
       port: process.env.PGPORT,
     },
     migrations: {
-      tableName: "knex_migrations",
+      directory: "./migrations",
+    },
+    seeds: {
+      directory: "./seeds",
     },
   },
 };
