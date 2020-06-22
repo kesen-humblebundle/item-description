@@ -4,7 +4,6 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
-const faker = require("faker");
 
 const app = express();
 const db = require("./data/db.js");
@@ -20,6 +19,11 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.render("index");
 }); 
+
+app.get("/api/descriptions", async (req, res) => {
+  let games = await db.select().table('descriptions');
+  res.status(200).json(games);
+});
 
 app.listen(PORT, () => {
   console.log("Listening on port " + PORT);

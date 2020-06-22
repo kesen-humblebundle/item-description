@@ -1,3 +1,5 @@
+
+
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex("games_genres")
@@ -21,6 +23,8 @@ exports.seed = function (knex) {
           while (usedGenres.includes(genre)) {
             genre = getRandomInRange(1, 16);
           }
+
+          usedGenres.push(genre);
 
           gameGenreCombos.push({
             id,
