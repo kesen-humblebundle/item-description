@@ -2,10 +2,11 @@ const express = require("express");
 const routes = express();
 const db = require("../models/descriptions.js");
 
-routes.use(express.Router);
+routes.use(express.Router());
 
 routes.get("/:product_id", async (req, res, next) => {
   let { product_id } = req.params;
+  console.log("test");
 
   if (!product_id) {
     return res.status(400).send("A valid product ID is required.");

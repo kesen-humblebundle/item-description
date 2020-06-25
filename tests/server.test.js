@@ -1,14 +1,24 @@
 const { TestScheduler } = require("jest");
-const app = require("../index.js");
-const db = require("../models/descriptions.js");
+const app = require("../server.js");
+const knex = require("../data/db");
 
 const request = require("supertest");
 
-beforeAll(() => {
-  // process.env = Object.assign(process.env, {
-  //   NODE_ENV: "development",
-  //   PORT: 5151,
-  // });
+beforeAll(async () => {
+  console.log("Seeding the test db");
+  const config = require("../knexfile.js")["test"];
+  await knex.migrate.down(config);
+  await knex.migrate.latest(config);
+  await knex.seed.run(config);
+});
+
+afterAll(async (done) => {
+  const config = require("../knexfile.js")["development"];
+  console.log("Resetting db. Tests  complete.");
+  await knex.migrate.down(config);
+  await knex.migrate.latest(config);
+  await knex.seed.run(config);
+  done(); // avoid jest open handle error
 });
 
 describe("sanity check", () => {
@@ -19,12 +29,9 @@ describe("sanity check", () => {
 
 describe("title endpoint", () => {
   test("returns a title of a game when passed a valid product id", async (done) => {
-    const response = await request(app)
-      .get("/description/title/1")
-      .expect("Content-Type", /text/)
-      .expect(200);
+    const response = await request(app).get("/description/title/1").expect(200);
 
-    return response;
+    done();
   });
 
   test("returns an appropriate error when passed an invalid product id", async () => {
