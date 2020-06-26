@@ -1,48 +1,51 @@
-const { TestScheduler } = require("jest");
+const { createInstance } = require("axios-test-instance");
 const app = require("../server.js");
+let instance;
 
-const request = require("supertest");
-
-beforeAll(async (done) => {
+beforeAll(async () => {
   const knex = require("../data/db");
+  instance = await createInstance(app);
   await knex.migrate.down();
   await knex.migrate.latest();
   await knex.seed.run();
-  done();
 });
 
-afterAll(async (done) => {
-  process.env.NODE_ENV = "development";
+afterAll(async () => {
   const knex = require("../data/db.js");
   await knex.migrate.down();
   await knex.migrate.latest();
   await knex.seed.run({
     directory: "./seeds",
   });
-  console.log("Post-test scripts ran");
-  done();
+  await knex.destroy();
+  await instance.close();
 });
 
 describe("sanity check", () => {
-  test("returns some content", async (done) => {
-    await request(app).get("/").expect(200);
-    done();
+  test("returns some content", async () => {
+    const { status } = await instance.get("/");
+
+    expect(status).toBe(200);
   });
 });
 
 describe("title endpoint", () => {
-  test("returns a title of a game when passed a valid product id", async (done) => {
-    const response = await request(app).get("/description/title/1").expect(200);
-    done();
+  test("returns a title of a game when passed a valid product id", async () => {
+    const { data, status } = await instance.get("/description/title/1");
+    console.log(data);
+
+    expect(status).toBe(200);
   });
 
-  test("returns an appropriate error when passed an invalid product id", async (done) => {
-    await request(app).get("/description/title/100").expect(404);
-    done();
+  test("returns an appropriate error when passed an invalid product id", async () => {
+    const { data, status } = await instance.get("/description/title/200");
+
+    expect(status).toBe(404);
   });
 
-  test("returns an appropriate error if no id is sent", async (done) => {
-    await request(app).get("/description/title").expect(400);
-    done();
+  test("returns an appropriate error if no id is sent", async () => {
+    const { status } = await instance.get("/description/title");
+
+    expect(status).toBe(400);
   });
 });
