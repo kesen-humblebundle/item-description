@@ -3,11 +3,12 @@ const app = require("../server.js");
 
 const request = require("supertest");
 
-beforeAll(async () => {
+beforeAll(async (done) => {
   const knex = require("../data/db");
   await knex.migrate.down();
   await knex.migrate.latest();
   await knex.seed.run();
+  done();
 });
 
 afterAll(async (done) => {
