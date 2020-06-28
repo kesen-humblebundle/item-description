@@ -12,6 +12,8 @@ routes.use(express.Router());
 
 routes.get("/:product_id", (req, res) => {
   let { product_id } = req.params;
+  // empty response to prevent tests from hanging
+  return res.status(300).end();
 });
 
 module.exports = routes;
