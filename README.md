@@ -20,6 +20,8 @@ product_id\
 
 Returns a `JSON object` with the product_id, title, descriptions, and genres.
 
+#### Example output
+
 ```JSON
 {
     "product_id": 1,
@@ -37,5 +39,11 @@ product_id\
 &ensp; Identifies the id number of the product being requested
 
 Returns a `string` containing the title for the game with `product_id`
+
+#### Example output
+
+```
+"Cool Game"
+```
 
 ---
