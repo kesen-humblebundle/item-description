@@ -18,7 +18,7 @@ describe("server unit tests", () => {
       const { data, status } = await instance.get("/description/1");
 
       expect(data).toMatchObject(descData[0]);
-      expec(status).toBe(200);
+      expect(status).toBe(200);
     });
 
     test("returns 404 error when passed invalid product id", async () => {
