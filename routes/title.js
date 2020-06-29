@@ -1,6 +1,13 @@
 const express = require("express");
 const routes = express();
-const db = require("../models/descriptions.js");
+//const db = require("../models/descriptions.js");
+let db;
+
+if (process.env.NODE_ENV === "testing") {
+  db = require("../tests/models/descriptions");
+} else {
+  db = require("../models/descriptions");
+}
 
 routes.use(express.Router());
 
@@ -10,7 +17,6 @@ routes.get("/", (req, res) => {
 
 routes.get("/:product_id", async (req, res, next) => {
   let { product_id } = req.params;
-  console.log("test");
 
   if (!product_id) {
     return res.status(400).send("A valid product ID is required.");
@@ -23,7 +29,7 @@ routes.get("/:product_id", async (req, res, next) => {
     }
     return res.status(200).send(title);
   } catch (err) {
-    console.log(err);
+    console.log("Failed to get title: \n", err);
     res.status(500).send({ err });
   }
 });
