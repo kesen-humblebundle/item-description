@@ -27,7 +27,7 @@ routes.get("/:product_id", async (req, res, next) => {
     if (!title) {
       return res.status(404).send("Invalid product id.");
     }
-    return res.status(200).send(title);
+    return res.status(200).send(title.title);
   } catch (err) {
     console.log("Failed to get title: \n", err);
     res.status(500).send({ err });
