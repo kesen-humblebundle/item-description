@@ -37,7 +37,7 @@ describe("server unit tests", () => {
   describe("GET /description/title/:product_id", () => {
     test("returns a title of a game when passed a valid product id", async () => {
       const { data, status } = await instance.get("/description/title/1");
-
+      console.log("Title from get: ", data);
       expect(data).toBe(descData[0]["title"]);
       expect(status).toBe(200);
     });

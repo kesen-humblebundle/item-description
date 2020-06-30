@@ -5,7 +5,7 @@ const getTitleByPID = (product_id) => {
 
   data.forEach((game) => {
     if (Number(game.product_id) == Number(product_id)) {
-      title = game.title;
+      title = { title: game.title };
     }
   });
 
