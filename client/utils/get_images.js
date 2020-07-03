@@ -1,3 +1,4 @@
+import axios from "axios";
 const US_API = "https://api.unsplash.com/";
 
 export const get_images = async () => {
