@@ -98,6 +98,7 @@ const DescToggle = styled.div`
   font-weight: 900;
   background-color: #e4e7ed;
   color: #494f5c;
+  cursor: pointer;
 `;
 
 const IconWrapper = styled.div`
