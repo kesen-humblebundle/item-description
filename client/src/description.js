@@ -20,7 +20,7 @@ const Description = ({ productID }) => {
       getImages().then((imageUrls) => {
         let images = imageUrls.map((url, i) => (
           <ImageWrapper key={"img" + i}>
-            <img src={url} />
+            <DescImage src={url} />
           </ImageWrapper>
         ));
 
@@ -41,14 +41,24 @@ const Description = ({ productID }) => {
 export default Description;
 
 const ParagraphWrapper = styled.p`
-  width: 100%;
-  margin-top: 15px;
-  background-color: black;
-  color: white;
+  font-family: "Sofia Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  margin: 20px;
+  background-color: #e4e7ed;
+  color: #494f5c;
 `;
 
 const ImageWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  align-content: center;
   max-width: 600px;
+`;
+
+const DescImage = styled.img`
+  width: 100%;
+  height: auto;
 `;
 
 const DescWrapper = styled.div`

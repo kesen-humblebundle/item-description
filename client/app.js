@@ -16,7 +16,8 @@ const App = () => {
 export default App;
 
 const AppWrapper = styled.div`
-  background-color: black;
+  background-color: #e4e7ed;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-content: center;
