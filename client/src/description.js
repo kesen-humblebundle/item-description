@@ -99,6 +99,9 @@ const DescToggle = styled.div`
   background-color: #e4e7ed;
   color: #494f5c;
   cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const IconWrapper = styled.div`
