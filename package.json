@@ -9,7 +9,7 @@
     "start": "node index.js my-app",
     "stop": "killall -SIGINT my-app",
     "build": "webpack",
-    "react:dev": "webpack --watch",
+    "react:dev": "webpack --watch --env.NODE_ENV=development --mode=development",
     "migrate:down": "npx knex migrate:rollback --all",
     "migrate:up": "npx knex migrate:latest",
     "seed": "npx knex migrate:latest && npx knex seed:run"
@@ -25,9 +25,12 @@
   },
   "homepage": "https://github.com/KichiUeda/Rane-app-description-service#readme",
   "dependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
+    "axios": "^0.19.2",
     "axios-test-instance": "^3.1.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "dotenv-webpack": "^1.8.0",
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "helmet": "^3.23.1",
@@ -35,7 +38,8 @@
     "morgan": "^1.10.0",
     "pg": "^8.2.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
@@ -44,6 +48,8 @@
     "@babel/preset-react": "^7.10.1",
     "babel-jest": "^26.0.1",
     "babel-loader": "^8.1.0",
+    "babel-plugin-styled-components": "^1.10.7",
+    "babel-polyfill": "^6.26.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.0.1",
     "mocha": "^8.0.1",
