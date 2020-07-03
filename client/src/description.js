@@ -44,6 +44,8 @@ const ParagraphWrapper = styled.p`
   font-family: "Sofia Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   margin: 20px;
+  line-height: 1.35;
+  font-weight: 600;
   background-color: #e4e7ed;
   color: #494f5c;
 `;
