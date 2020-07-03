@@ -54,6 +54,14 @@ describe("server unit tests", () => {
       expect(status).toBe(400);
     });
   });
+
+  describe("GET /genres/:product_id", () => {
+    test("returns 400 if no id is sent", async () => {
+      const { status } = await instance.get("/genre");
+
+      expect(status).toBe(400);
+    });
+  });
 });
 
 xdescribe("server integration testing", () => {

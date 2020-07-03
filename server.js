@@ -18,6 +18,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/description/title", titleRoutes);
 app.use("/description/", descriptionRoutes);
+app.use("/genre", genreRoutes);
 
 app.get("/", (req, res) => {
   res.render("index");

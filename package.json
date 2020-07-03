@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "dev": "nodemon index.js",
+    "dev": "systemctl start postgresql && nodemon index.js",
     "start": "node index.js my-app",
     "stop": "killall -SIGINT my-app",
     "build": "webpack",
