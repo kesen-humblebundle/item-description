@@ -39,21 +39,9 @@ const Description = ({ productID }) => {
     });
   }, []);
 
-  const setDescElm = (elm) => {
-    descElm = elm;
-
-    if (descElm !== null) {
-      console.log("In here ", descElm);
-      descElm.scrollTo(0, 0);
-    }
-
-    //setExpanded(false);
-  };
   return (
     <div>
-      <DescWrapper ref={setDescElm} expanded={expanded}>
-        {description}
-      </DescWrapper>
+      <DescWrapper expanded={expanded}>{description}</DescWrapper>
       <DescToggle onClick={() => setExpanded(!expanded)}>
         <span>
           {expanded ? "Show less" : "Read more"} about {title}{" "}
