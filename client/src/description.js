@@ -37,7 +37,7 @@ const Description = ({ productID }) => {
         setDescription(descriptionArr);
       });
     });
-  }, []);
+  }, [productID]);
 
   return (
     <div>

@@ -20,8 +20,8 @@ app.use("/description/title", titleRoutes);
 app.use("/description/", descriptionRoutes);
 app.use("/genre", genreRoutes);
 
-app.get("/", (req, res) => {
-  res.render("index");
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 module.exports = app;
