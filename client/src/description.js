@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
@@ -9,6 +9,7 @@ const Description = ({ productID }) => {
   let [description, setDescription] = useState("");
   let [title, setTitle] = useState("");
   let [expanded, setExpanded] = useState(false);
+  let descElm = null;
 
   useEffect(() => {
     let desc = getDescription(productID).then((resp) => {
@@ -37,9 +38,22 @@ const Description = ({ productID }) => {
       });
     });
   }, []);
+
+  const setDescElm = (elm) => {
+    descElm = elm;
+
+    if (descElm !== null) {
+      console.log("In here ", descElm);
+      descElm.scrollTo(0, 0);
+    }
+
+    //setExpanded(false);
+  };
   return (
     <div>
-      <DescWrapper expanded={expanded}>{description}</DescWrapper>
+      <DescWrapper ref={setDescElm} expanded={expanded}>
+        {description}
+      </DescWrapper>
       <DescToggle onClick={() => setExpanded(!expanded)}>
         <span>
           {expanded ? "Show less" : "Read more"} about {title}{" "}
@@ -63,7 +77,7 @@ const ParagraphWrapper = styled.p`
   font-size: 16px;
   margin: 20px;
   line-height: 1.35;
-  font-weight: 600;
+  font-weight: 500;
   background-color: #e4e7ed;
   color: #494f5c;
 `;
@@ -84,7 +98,7 @@ const DescImage = styled.img`
 const DescWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   align-content: center;
   height: ${(props) => (props.expanded === false ? "345px" : "auto")};
