@@ -15,7 +15,11 @@ exports.seed = function (knex) {
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(" ");
-        let description = faker.fake("{{lorem.paragraphs}}");
+        let description = faker.fake(
+          "{{lorem.sentences}}{{lorem.sentences}}{{lorem.sentences}}{{lorem.sentences}}\n \r" +
+            "{{lorem.sentences}}{{lorem.sentences}}{{lorem.sentences}}{{lorem.sentences}}\n \r" +
+            "{{lorem.sentences}}{{lorem.sentences}}{{lorem.sentences}}{{lorem.sentences}}"
+        );
 
         games.push({
           product_id: i,
