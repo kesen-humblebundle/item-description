@@ -94,6 +94,10 @@ const DescWrapper = styled.div`
 `;
 
 const DescToggle = styled.div`
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-start;
   font-family: "Sofia Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   margin: 20px;
@@ -108,5 +112,5 @@ const DescToggle = styled.div`
 
 const IconWrapper = styled.div`
   display: inline-block;
-  height: 100%;
+  margin-top: 3px;
 `;
