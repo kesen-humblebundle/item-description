@@ -21,7 +21,5 @@ export const getImages = async () => {
     },
   });
 
-  console.log(images.data);
-
   return images.data.data.map((imgData) => imgData.images.original.url);
 };
