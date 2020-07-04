@@ -4,6 +4,7 @@ const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   entry: ["./client/index.js"],
+  target: "node",
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "bundle.js",
@@ -34,6 +35,7 @@ module.exports = {
       },
       {
         test: /\.css$/i,
+        exclude: /(node_modules|bower_components)/,
         use: ["style-loader", "css-loader"],
       },
     ],
