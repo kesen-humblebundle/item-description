@@ -20,6 +20,12 @@ app.use("/description/title", titleRoutes);
 app.use("/description/", descriptionRoutes);
 app.use("/genre", genreRoutes);
 
+app.get("/bundle", (req, res) => {
+  res
+    .type("application/javascript")
+    .sendFile(path.join(__dirname, "public", "bundle.js"));
+});
+
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
