@@ -9,7 +9,10 @@ const App = () => {
   useEffect(() => {
     let path = window.location.pathname;
 
+    path = path.slice(1);
+
     console.log(path);
+    setId(path);
   }, []);
   return (
     <AppWrapper>

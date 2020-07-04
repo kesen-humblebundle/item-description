@@ -36,7 +36,7 @@ const Description = ({ productID }) => {
         setDescription(descriptionArr);
       });
     });
-  }, []);
+  }, [productID]);
   return (
     <div>
       <DescWrapper expanded={expanded}>{description}</DescWrapper>
