@@ -11,7 +11,6 @@ const App = () => {
 
     path = path.slice(1);
 
-    console.log(path);
     setId(path);
   }, []);
   return (
