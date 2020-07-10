@@ -77,6 +77,7 @@ const TitleWrapper = styled.div`
   font-size: 16px;
   margin: 20px;
   line-height: 1.35;
+  align-self: flex-start;
   font-weight: 700;
   background-color: #e4e7ed;
   color: #494f5c;
