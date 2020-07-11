@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import Description from "./src/description";
+import Description from "./Description";
 
-const App = () => {
+const DescRoot = () => {
   const [id, setId] = useState(1);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const App = () => {
   );
 };
 
-export default App;
+export default DescRoot;
 
 const AppWrapper = styled.div`
   background-color: #e4e7ed;
