@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
-import { getDescription } from "../utils/get_description";
-import { getImages } from "../utils/get_images";
+import { getDescription } from "../../utils/get_description";
+import { getImages } from "../../utils/get_images";
 
 const Description = ({ productID }) => {
   let [description, setDescription] = useState("");

@@ -8,7 +8,7 @@
     "dev": "systemctl start postgresql && nodemon index.js",
     "start": "node index.js my-app",
     "stop": "killall -SIGINT my-app",
-    "build": "webpack",
+    "build": "webpack --env.NODE_ENV=production --mode=production",
     "react:dev": "webpack --watch --env.NODE_ENV=development --mode=development",
     "migrate:down": "npx knex migrate:rollback --all",
     "migrate:up": "npx knex migrate:latest",
