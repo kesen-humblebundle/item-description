@@ -7,4 +7,7 @@ import TitleRoot from "./src/components/TitleRoot";
 import "./index.css";
 
 ReactDOM.render(<DescRoot />, document.querySelector("#desc"));
-ReactDOM.render(<TitleRoot />, document.querySelector("#Title"));
+ReactDOM.render(
+  <TitleRoot pathname={window.location.pathname} />,
+  document.querySelector("#Title")
+);

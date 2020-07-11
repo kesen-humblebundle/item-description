@@ -3,23 +3,23 @@ import styled from "styled-components";
 
 import { getTitle } from "../../utils/get_title";
 
-const TitleRoot = () => {
+const TitleRoot = ({ pathname }) => {
   const [id, setId] = useState(21);
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    let path = window.location.pathname;
+    let path = pathname;
 
     path = path.slice(1);
 
     setId(path);
 
-    getTitle(id).then((newTitle) => {
+    getTitle(path).then((newTitle) => {
       console.log(newTitle);
       setTitle(newTitle);
       console.log(title);
     });
-  }, []);
+  }, [pathname]);
   return <Title>{title}</Title>;
 };
 
