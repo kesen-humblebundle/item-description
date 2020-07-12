@@ -2,12 +2,18 @@ const db = require("../data/db.js");
 const genreDB = require("./genres");
 
 const getTitleByPID = async (product_id) => {
-  let title = await db
-    .select("title")
-    .from("descriptions")
-    .where({ product_id });
+  let title;
 
-  return title[0];
+  if (!Array.isArray(product_id)) {
+    product_id = [product_id];
+  }
+
+  title = await db
+    .select("product_id", "title")
+    .from("descriptions")
+    .whereIn("product_id", product_id);
+
+  return title;
 };
 
 const getDescriptionByPID = async (product_id) => {

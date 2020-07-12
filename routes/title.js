@@ -11,8 +11,18 @@ if (process.env.NODE_ENV === "testing") {
 
 routes.use(express.Router());
 
-routes.get("/", (req, res) => {
-  return res.status(400).send("A valid product ID is required.");
+routes.get("/", async (req, res) => {
+  let { id } = req.query;
+  let titles;
+
+  if (!id || id.length <= 0) {
+    return res.status(400).send("A valid product ID is required.");
+  }
+
+  titles = await db.getTitleByPID(id);
+
+  console.log(id);
+  res.status(200).send(titles);
 });
 
 routes.get("/:product_id", async (req, res, next) => {
@@ -27,7 +37,7 @@ routes.get("/:product_id", async (req, res, next) => {
     if (!title) {
       return res.status(404).send("Invalid product id.");
     }
-    return res.status(200).send(title.title);
+    return res.status(200).send(title[0].title);
   } catch (err) {
     console.log("Failed to get title: \n", err);
     res.status(500).send({ err });
