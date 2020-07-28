@@ -40,7 +40,7 @@ const Description = ({ productID }) => {
   }, [productID]);
 
   return (
-    <div>
+    <Container>
       <DescWrapper expanded={expanded}>
         <TitleWrapper>
           <Title>{title}</Title> is provided via Steam for Windows. A free Steam
@@ -62,11 +62,16 @@ const Description = ({ productID }) => {
           </IconWrapper>
         </ToggleText>
       </DescToggle>
-    </div>
+    </Container>
   );
 };
 
 export default Description;
+
+const Container = styled.div`
+  max-width: 1125px;
+  margin: 0 auto;
+`;
 
 const Title = styled.span`
   font-style: italic;
@@ -75,7 +80,7 @@ const Title = styled.span`
 const TitleWrapper = styled.div`
   font-family: "Sofia Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  margin: 20px;
+  margin: 20px 0;
   line-height: 1.35;
   align-self: flex-start;
   font-weight: 700;
@@ -86,7 +91,7 @@ const TitleWrapper = styled.div`
 const ParagraphWrapper = styled.p`
   font-family: "Sofia Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  margin: 20px;
+  margin: 20px 0;
   line-height: 1.35;
   font-weight: 500;
   background-color: #e4e7ed;
