@@ -31,5 +31,4 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: 900;
   margin-top: 30px;
-  margin-left: 64px;
 `;
