@@ -52,6 +52,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.10.7",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-minify": "^0.5.1",
     "css-loader": "^3.6.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.0.1",
