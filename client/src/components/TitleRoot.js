@@ -30,5 +30,4 @@ const Title = styled.div`
   text-transform: uppercase;
   font-size: 24px;
   font-weight: 900;
-  margin-top: 30px;
 `;
