@@ -69,7 +69,7 @@ const Description = ({ productID }) => {
 export default Description;
 
 const Container = styled.div`
-  max-width: 1125px;
+  max-width: 1140px;
   margin: 0 auto;
 `;
 
