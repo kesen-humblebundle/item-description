@@ -24,7 +24,7 @@ export default DescRoot;
 
 const AppWrapper = styled.div`
   background-color: #e4e7ed;
-  padding: 20px;
+  padding: 20px 0;
   display: flex;
   width: 100%;
   flex-direction: column;
