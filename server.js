@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -31,4 +32,12 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-module.exports = app;
+const server = app.listen(process.env.PORT || 3003, () => {
+  // Suppress console.log during testing to reduce testing command line display clutter
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(`Listening on port ${process.env.PORT || 3003}`);
+  }
+
+});
+
+module.exports = { app, server };
