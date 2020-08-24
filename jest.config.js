@@ -1,6 +1,12 @@
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 
-process.env.PORT = 5151;
-process.env.NODE_ENV = "testing";
-
-module.exports = () => {};
+module.exports = {
+  globalSetup: './tests/globalTestSetup.js',
+  globalTeardown: './tests/globalTestTeardown.js',
+  globals: {
+    PORT: 5151,
+    NODE_ENV: 'test'
+  },
+  testEnvironment: 'jsdom',
+  verbose: true
+};

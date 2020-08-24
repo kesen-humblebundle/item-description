@@ -1,16 +1,14 @@
 # Description Service for HumbleBundle item page clone
 
-[![Build Status](https://travis-ci.org/KichiUeda/Rane-app-description-service.svg?branch=master)](https://travis-ci.org/KichiUeda/Rane-app-description-service)
-
-Trello board: https://trello.com/b/jXtaAGh1/description-service
+Tickets: https://trello.com/b/ucesbil9/christina-item-description
 
 ## System requirements
 
-This project uses PostgreSQL. Please ensure PostgreSQL is installed and running prior to complete these steps.
+This project uses PostgreSQL. Please ensure PostgreSQL v12 is installed and running prior to complete these steps.
 
 ## Environment variables
 
-The environmental variables below are required to run this project. Please set them in your environment or place them in a `.env` file in the root directory.
+The environmental variables below are required to run this project. Please set them in your environment or place them in a `.env` file in the root directory. The .env file has been `.gitignore`d for your convenience.
 
 ```
 PORT=3003
@@ -18,7 +16,7 @@ PGDATABASE=desc_service
 PGPORT=5432
 PGHOST=localhost
 PGUSER=your_user
-PGPASSWORD=you_decide
+PGPASSWORD=your_password
 ```
 
 ## Installing and running
@@ -27,7 +25,13 @@ The following steps should allow you to run this project locally.
 
 1. Clone/download this repo
 2. Add the above-mentioned environmental variables
-3. Run install and start scripts
+3. Create `desc_service` database using:
+```bash
+createdb desc_service         # From CLI, or
+
+CREATE DATABASE desc_service  # From psql
+```
+4. Run install and start scripts
 
 ```bash
         npm install         # install dependencies
@@ -44,14 +48,11 @@ The following steps should allow you to run this project locally.
 
 ## Endpoints
 
-base url: http://ec2-54-224-38-115.compute-1.amazonaws.com:5150/
-<br>
-<br>
-<br>
+### ~~base url: http://ec2-54-224-38-115.compute-1.amazonaws.com:5150/~~
 
 ---
 
-GET `description/:product_id`\
+### GET `/description/:product_id`
 product_id\
 &ensp; Number\
 &ensp; Identifies the id number of the product being requested
@@ -60,8 +61,8 @@ Returns a `JSON object` with the product_id, title, descriptions, and genres.
 
 #### Example output
 
-```JSON
-// for description/1
+```javascript
+// for /description/1
 
 {
     "product_id": 1,
@@ -73,7 +74,8 @@ Returns a `JSON object` with the product_id, title, descriptions, and genres.
 
 ---
 
-GET `description/title/:product_id`\
+### GET `/description/title/:product_id`
+
 product_id\
 &ensp; Number\
 &ensp; Identifies the id number of the product being requested
@@ -82,23 +84,24 @@ Returns a `string` containing the title for the game with `product_id`
 
 #### Example output
 
-```
-// for description/title/21
+```javascript
+// for /description/title/21
 
 "Cool Game"
 ```
 
 ---
 
-GET `description/title?id=#`\
+### GET `/description/title?id=#`
+
 Can include as many id queries as needed with `&` between them
 
 Returns an array of `JSON objects` with the product id and the title for each requested item.
 
 #### Example output
 
-```JSON
-// for description/title?id=1&id=7
+```javascript
+// for /description/title?id=1&id=7
 
 [
   {
@@ -114,8 +117,9 @@ Returns an array of `JSON objects` with the product id and the title for each re
 
 ---
 
-GET `genre/:product_id`\
-product_id
+### GET `genre/:product_id`
+
+product_id\
 &ensp; Number\
 &ensp; Identifies the id number of the product being requested
 
@@ -123,7 +127,7 @@ Returns an array of genre names for the provided product id.
 
 #### Example output
 
-```JSON
+```javascript
 // for genre/7
 
 [

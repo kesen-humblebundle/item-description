@@ -20,17 +20,7 @@ module.exports = {
       {
         test: /\.m?js$/,
         exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env", "@babel/preset-react", "minify"],
-            plugins: [
-              "babel-plugin-styled-components",
-              "@babel/plugin-transform-runtime",
-              "@babel/plugin-transform-react-jsx",
-            ],
-          },
-        },
+        use: "babel-loader",
       },
       {
         test: /\.css$/i,
