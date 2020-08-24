@@ -1,0 +1,35 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/item-description
+    docker:
+      - image: circleci/node:12.14.0
+        environment: 
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+          NODE_ENV: test
+      - image: postgres:12.3
+        environment:
+          POSTGRES_HOST_AUTH_METHOD: trust
+    environment:
+      NODE_ENV: test
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-npm-wee
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: wait-for-postgres
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: test
+          command: npm run test
