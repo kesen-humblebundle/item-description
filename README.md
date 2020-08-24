@@ -1,6 +1,8 @@
-# Description Service for HumbleBundle item page clone
+# System Design for Humble Bundle clone's Description service
 
-Tickets: https://trello.com/b/ucesbil9/christina-item-description
+**Author**: [Christina Wang](https://github.com/cywang117)
+
+**Tickets**: https://trello.com/b/ucesbil9/christina-item-description
 
 ## System requirements
 
@@ -53,7 +55,7 @@ CREATE DATABASE desc_service  # From psql
 ---
 
 ### GET `/description/:product_id`
-product_id\
+- product_id\
 &ensp; Number\
 &ensp; Identifies the id number of the product being requested
 
@@ -74,9 +76,55 @@ Returns a `JSON object` with the product_id, title, descriptions, and genres.
 
 ---
 
+### POST `/description`
+
+- POST body:
+  ```javascript
+      {
+        title: String,
+        description: String,
+        genres: Array[String]
+      }
+  ```
+
+Returns a text message (`response.text`) indicating success or failure of POST request.
+
+---
+
+### PUT `/description/:product_id`
+- product_id\
+&ensp; Number\
+&ensp; Identifies the id number of the product being requested
+
+- PUT body:
+  ```javascript
+  // One or more fields may be sent with the PUT request. Fields that are not included will not be changed (behaves like a PATCH request)
+      {
+        title: String,
+        description: String,
+        genres: Array[String]
+      }
+  ```
+
+Returns a text message (`response.text`) indicating success or failure of PUT request.
+
+---
+
+### DELETE `/description/:product_id`
+
+Note that deleting a product will also delete all its genres in the `games_genres` join table.
+
+- product_id\
+&ensp; Number\
+&ensp; Identifies the id number of the product being requested
+
+Returns a text message (`response.text`) indicating success or failure of DELETE request.
+
+---
+
 ### GET `/description/title/:product_id`
 
-product_id\
+- product_id\
 &ensp; Number\
 &ensp; Identifies the id number of the product being requested
 
@@ -117,9 +165,9 @@ Returns an array of `JSON objects` with the product id and the title for each re
 
 ---
 
-### GET `genre/:product_id`
+### GET `/genre/:product_id`
 
-product_id\
+- product_id\
 &ensp; Number\
 &ensp; Identifies the id number of the product being requested
 
@@ -128,7 +176,7 @@ Returns an array of genre names for the provided product id.
 #### Example output
 
 ```javascript
-// for genre/7
+// for /genre/7
 
 [
   "Indie",
@@ -136,3 +184,92 @@ Returns an array of genre names for the provided product id.
   "RPG"
 ]
 ```
+
+---
+
+### GET `/genre/genres`
+
+Returns an array of all valid genres currently available.
+
+#### Example output
+
+```javascript
+// /genre/genres
+
+[
+  "Indie",
+  "Racing",
+  "RPG"
+]
+```
+
+---
+
+### POST `/genre/:product_id`
+
+- product_id\
+&ensp; Number\
+&ensp; Identifies the id number of the product being requested
+
+- POST body:
+  ```javascript
+  {
+    genre: String
+  }
+  ```
+Returns a message for the following conditions:
+- Successful POST
+- Invalid product id
+- Invalid genre (not in list of all valid genres specified in `/genre/genres` endpoint)
+
+Returns a JSON if valid product id and genre, but genre already exists:
+```javascript
+// For a game with PID 1 & genres ['Action', 'Adventure']
+
+// POST { genre: 'Action' }
+
+{
+  error: 'Genre Action already exists for product id 1.',
+  validGenres: [
+    'FPS',
+    'Indie',
+    ... // All valid genres aside from Action or Adventure
+  ]
+}
+```
+
+---
+
+### DELETE `/genre/:product_id`
+
+- product_id\
+&ensp; Number\
+&ensp; Identifies the id number of the product being requested
+
+Returns a message for the following conditions:
+- Successful DELETE
+- Invalid product id
+- Invalid genre (not in list of all valid genres specified in `/genre/genres` endpoint)
+
+Returns a JSON if valid product id and genre, but genre doesn't exist:
+```javascript
+// For a game with PID 1 & genres ['Action', 'Adventure']
+
+// DELETE { genre: 'Puzzle' }
+
+{
+  error: 'Genre Puzzle doesn\'t exist for product id 1.',
+  validGenres: [
+    'Action',
+    'Adventure'
+  ]
+}
+```
+
+---
+
+## Attributions
+
+Legacy codebase: https://github.com/KichiUeda/Rane-app-description-service
+
+Legacy codebase author: [Rane Wallin](https://github.com/RaneWallin)
