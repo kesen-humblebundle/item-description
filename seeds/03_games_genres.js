@@ -6,9 +6,8 @@ exports.seed = function (knex) {
     .del()
     .then(function () {
       // create random genres
-      // id, product_id, genre_id
+      // product_id, genre_id
       let gameGenreCombos = [];
-      let id = 1;
 
       for (let i = 1; i <= 100; i++) {
         // Each game has a random number of genres between 1 and 3
@@ -27,12 +26,9 @@ exports.seed = function (knex) {
           usedGenres.push(genre);
 
           gameGenreCombos.push({
-            id,
             product_id: i,
             genre_id: genre,
           });
-
-          id++;
         }
       }
       // Inserts seed entries
