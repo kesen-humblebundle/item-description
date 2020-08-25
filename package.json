@@ -1,34 +1,33 @@
 {
-  "name": "rane-app-description-service",
+  "name": "item-description",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest --testTimeout=15000",
     "dbStart": "systemctl start postgresql",
-    "server:dev": "nodemon index.js",
-    "start": "node index.js my-app",
+    "server:dev": "cross-env NODE_ENV=development nodemon server.js",
+    "start": "node server.js my-app",
     "stop": "killall -SIGINT my-app",
     "build": "webpack --env.NODE_ENV=production --mode=production",
     "react:dev": "webpack --watch --env.NODE_ENV=development --mode=development",
     "migrate:down": "npx knex migrate:rollback --all",
     "migrate:up": "npx knex migrate:latest",
-    "seed": "npx knex migrate:latest && npx knex seed:run"
+    "seed:internal": "knex migrate:rollback && knex migrate:latest && knex seed:run",
+    "seed": "npm i -g knex && npm run seed:internal"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KichiUeda/Rane-app-description-service.git"
+    "url": "git+https://github.com/kesen-humblebundle/item-description.git"
   },
-  "author": "Rane Wallin",
+  "author": "Christina Wang",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/KichiUeda/Rane-app-description-service/issues"
+    "url": "https://github.com/kesen-humblebundle/item-description/issues"
   },
-  "homepage": "https://github.com/KichiUeda/Rane-app-description-service#readme",
+  "homepage": "https://github.com/kesen-humblebundle/item-description#readme",
   "dependencies": {
-    "@babel/plugin-transform-react-jsx": "^7.10.4",
     "axios": "^0.19.2",
-    "axios-test-instance": "^3.1.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "dotenv-webpack": "^1.8.0",
@@ -45,23 +44,29 @@
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.10.3",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.10.7",
-    "babel-polyfill": "^6.26.0",
     "babel-preset-minify": "^0.5.1",
+    "cross-env": "^7.0.2",
     "css-loader": "^3.6.0",
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.0.1",
-    "mocha": "^8.0.1",
     "nodemon": "^2.0.4",
-    "react-test-renderer": "^16.13.1",
-    "request": "^2.88.2",
-    "sinon": "^9.0.2",
     "style-loader": "^1.2.1",
+    "supertest": "^4.0.2",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
   }

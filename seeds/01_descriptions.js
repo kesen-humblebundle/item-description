@@ -22,7 +22,6 @@ exports.seed = function (knex) {
         );
 
         games.push({
-          product_id: i,
           title,
           description,
         });

@@ -1,0 +1,18 @@
+module.exports = [
+  "Action",
+  "Adventure",
+  "FPS",
+  "Indie",
+  "MMO",
+  "Multiplayer",
+  "Puzzle",
+  "Racing",
+  "Retro",
+  "RPG",
+  "Simulation",
+  "Sports",
+  "Stealth",
+  "Strategy",
+  "Tabletop",
+  "Virtual Reality",
+]
