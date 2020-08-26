@@ -51,6 +51,15 @@ The following steps should allow you to run this project locally.
         sudo npm i -g knex
         npm run seed:internal
       ```
+  - If you encounter seeding issues, please ensure that your postgres account as listed in your .env file has superuser privileges.
+    - [List PostgreSQL users](https://www.postgresqltutorial.com/postgresql-list-users/)
+    - [Alter PostgreSQL user role](https://www.postgresql.org/docs/12/sql-alterrole.html)
+    - [Create PostgreSQL user](https://www.postgresql.org/docs/12/sql-createuser.html)
+
+    Note that SQL commands may be executed from within the psql CLI tool:
+    ```bash
+      psql -U your_username
+    ```
 
 ## Endpoints
 
