@@ -28,25 +28,29 @@ The following steps should allow you to run this project locally.
 1. Clone/download this repo
 2. Add the above-mentioned environmental variables
 3. Create `desc_service` database using:
-```bash
-createdb desc_service         # From CLI, or
+    ```bash
+      createdb desc_service         # From CLI, or
 
-CREATE DATABASE desc_service  # From psql
-```
+      CREATE DATABASE desc_service  # From psql
+    ```
 4. Run install and start scripts
+    ```bash
+      npm install         # install dependencies
+      npm run seed        # build and seed DB tables
 
-```bash
-        npm install         # install dependencies
-        npm run seed        # build and seed DB tables
+      # For development
+      npm run react:dev   # start webpack in watch mode
+      npm run server:dev  # start nodemon
 
-        # For development
-        npm run react:dev   # start webpack in watch mode
-        npm run server:dev  # start nodemon
-
-        # For production build
-        npm run build      # create production build
-        npm run start      # start node server
-```
+      # For production build
+      npm run build      # create production build
+      npm run start      # start node server
+    ```
+  - If using Mac, run these commands to seed the database instead:
+      ```bash
+        sudo npm i -g knex
+        npm run seed:internal
+      ```
 
 ## Endpoints
 
