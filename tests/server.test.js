@@ -10,15 +10,18 @@ const db = require('../data/db');
 // console.log = jest.fn(); // Suppress model & route console.logs in test command line display
 
 describe("server integration tests", () => {
-  beforeAll(async () => {
+  beforeAll(() => {
     return db.migrate.rollback()
       .then(() => db.migrate.latest())
       .then(() => db.seed.run());
   });
 
-  afterAll(async () => {
-    await server.close();
-    return db.destroy();
+  afterAll((done) => {
+    server.close(() => {
+      return db.destroy()
+        .then(() => done())
+        .catch(() => done());
+    });
   });
 
   /***************************
