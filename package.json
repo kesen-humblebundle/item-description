@@ -9,6 +9,8 @@
     "start": "node server.js my-app",
     "stop": "killall -SIGINT my-app",
     "build": "webpack --env.NODE_ENV=production --mode=production",
+    "seed": "npm i -g knex && npm run seed:internal",
+    "seed:internal": "knex migrate:rollback && knex migrate:latest && knex seed:run",
     "react:dev": "webpack --watch --env.NODE_ENV=development --mode=development",
     "data:gen": "node data/data-gen/index.js"
   },
@@ -57,6 +59,7 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
+    "faker": "^5.1.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.0.1",
     "nodemon": "^2.0.4",
