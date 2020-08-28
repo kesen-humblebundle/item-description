@@ -5,14 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --testTimeout=15000",
-    "dbStart": "systemctl start postgresql",
     "server:dev": "cross-env NODE_ENV=development nodemon server.js",
     "start": "node server.js my-app",
     "stop": "killall -SIGINT my-app",
     "build": "webpack --env.NODE_ENV=production --mode=production",
     "react:dev": "webpack --watch --env.NODE_ENV=development --mode=development",
-    "seed:internal": "knex migrate:rollback && knex migrate:latest && knex seed:run",
-    "seed": "npm i -g knex && npm run seed:internal",
     "data:gen": "node data/data-gen/index.js"
   },
   "repository": {
@@ -31,7 +28,6 @@
     "dotenv": "^8.2.0",
     "dotenv-webpack": "^1.8.0",
     "express": "^4.17.1",
-    "faker": "^4.1.0",
     "helmet": "^3.23.1",
     "knex": "^0.21.1",
     "morgan": "^1.10.0",
