@@ -4,15 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --testTimeout=15000",
-    "server:dev": "cross-env NODE_ENV=development nodemon server.js",
-    "start": "node server.js my-app",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=15000",
+    "server:dev": "node server/parseEnvStartServer.js",
+    "server:maria": "npm run server:dev --db=mariadb",
+    "server:couch": "npm run server:dev --db=couchdb",
+    "seed:maria": "cross-env NODE_ENV=development node db/seedMariaDB.js",
+    "seed:couch": "echo \"No seeding script exists\" && exit 1",
+    "start": "node server/index.js my-app",
     "stop": "killall -SIGINT my-app",
     "build": "webpack --env.NODE_ENV=production --mode=production",
-    "seed": "npm i -g knex && npm run seed:internal",
-    "seed:internal": "knex migrate:rollback && knex migrate:latest && knex seed:run",
     "react:dev": "webpack --watch --env.NODE_ENV=development --mode=development",
-    "data:gen": "node data/data-gen/index.js"
+    "data:gen": "node db/data-gen/index.js"
   },
   "repository": {
     "type": "git",
@@ -31,7 +33,7 @@
     "dotenv-webpack": "^1.8.0",
     "express": "^4.17.1",
     "helmet": "^3.23.1",
-    "knex": "^0.21.1",
+    "mariadb": "^2.4.2",
     "morgan": "^1.10.0",
     "pg": "^8.2.1",
     "react": "^16.13.1",
