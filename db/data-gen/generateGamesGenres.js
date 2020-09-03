@@ -22,13 +22,14 @@ exports.generateGamesGenres = async (numRecords, numGenres, outDir) => {
   let fileId = 1;
   let keys = ['id', 'product_id', 'genre_id'];
   let stream;
+  const ROW_LIMIT = 1e5;
 
-  // Loop through numRecords, writing each to file with a limit of 10000 rows,
+  // Loop through numRecords, writing each to file with a limit of 100000 rows,
   // waiting for write buffer to drain every time it fills
   for (let i = 0; i < numRecords; i++) {
 
-    // Create a new file stream every 10000 records
-    if (i % 10000 === 0) {
+    // Create a new file stream every 100000 records
+    if (i % ROW_LIMIT === 0) {
       stream && stream.end();
       stream = fs.createWriteStream(`${outDir}/games_genres_${fileId}.csv`);
 
@@ -78,6 +79,6 @@ exports.generateGamesGenres = async (numRecords, numGenres, outDir) => {
   } // end for loop numFiles
 
   stream && stream.end();
-  console.log(`\n${numRecords % 10000 === 0 ? fileId - 1 : fileId} games_genres files of <=10000 records each generated. Check ${outDir}\\games_genres_<index>.csv.`);
+  console.log(`\n${numRecords % ROW_LIMIT === 0 ? fileId - 1 : fileId} games_genres files of <=${ROW_LIMIT} records each generated. Check ${outDir}\\games_genres_<index>.csv.`);
   return true;
 }
