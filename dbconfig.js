@@ -14,6 +14,8 @@ module.exports = {
     },
     test: {
       ...mariaBaseConfig,
+      user: process.env.CI ? 'root' : process.env.MDBUSER,
+      password: process.env.CI ? 'ci_password' : process.env.MDBPASS,
       database: process.env.DBNAME + '_test'
     },
     production: {
