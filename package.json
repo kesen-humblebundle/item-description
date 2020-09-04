@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --testTimeout=15000",
+    "test": "npm run test:maria",
+    "test:maria": "cross-env NODE_ENV=test DB=mariadb jest --testTimeout=15000",
+    "test:couch": "cross-env NODE_ENV=test DB=couchdb jest --testTimeout=15000",
     "server:dev": "node server/parseEnvStartServer.js",
     "server:maria": "npm run server:dev --db=mariadb",
     "server:couch": "npm run server:dev --db=couchdb",

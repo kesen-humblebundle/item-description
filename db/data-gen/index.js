@@ -145,7 +145,7 @@ const parseArgsAndRunDataGen = async () => {
     }
 
     await generateGenres(genres, outDir);
-    //await generateDescriptions(numRecords, outDir);
+    await generateDescriptions(numRecords, outDir);
     await generateGamesGenres(numRecords, genres.length, outDir);
   } catch (e) {
     console.error(e.message);
