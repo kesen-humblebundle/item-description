@@ -3,5 +3,4 @@ node_modules
 bundle.js
 bundle.js.map
 
-**/*.csv
-
+db/data-gen/csv/*.csv

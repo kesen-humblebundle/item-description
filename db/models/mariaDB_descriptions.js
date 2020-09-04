@@ -16,11 +16,12 @@ exports.getTitleByPID = async (product_id) => {
   }
 
   let conn = await db.getConnection();
-  let titleArr = await conn.query(`
+  let query = `
     SELECT product_id, title
     FROM descriptions
-    WHERE product_id IN (${product_id.join(',')})
-  `);
+    WHERE product_id${product_id.length > 1 ? ` IN (${product_id.join(',')})` : `=${product_id}`}
+  `;
+  let titleArr = await conn.query(query);
 
   if (!titleArr.length) {
     throw new Error(`No titles found matching product id ${product_id}.`);
@@ -99,14 +100,13 @@ exports.addDescription = async (title, description, genres) => {
   await conn.beginTransaction();
 
   try {
-    let insertedProductId = await conn.query(`
+    let okPacket = await conn.query(`
       INSERT INTO descriptions (title, description)
       VALUES ('${title}', '${description}')
-      RETURNING (SELECT LAST_INSERT_ID())
     `);
 
     for (let i = 0; i < genres.length; i++) {
-      await addGenreForPIDAsTransaction(insertedProductId[0].product_id, genres[i], conn);
+      await addGenreForPIDAsTransaction(okPacket.insertId, genres[i], conn);
     }
 
     await conn.commit();

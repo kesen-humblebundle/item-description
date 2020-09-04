@@ -1,12 +1,13 @@
 require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
-const mariadb = require('mariadb');
 
 const config = require('../dbconfig').mariadb[process.env.NODE_ENV];
-const pool = mariadb.createPool(config);
+const db = require('./mariadb');
 
-let defaultCSVDirPath = path.resolve(__dirname, 'data-gen', 'csv');
+let defaultCSVDirPath = process.env.NODE_ENV === 'test' ?
+  path.resolve(__dirname, '..', 'tests', 'fixtures') :
+  path.resolve(__dirname, 'data-gen', 'csv');
 
 /**
  * Creates the 'item_descriptions' or 'item_descriptions_test' database,
@@ -24,30 +25,26 @@ const createDatabase = async (conn) => {
  * @param {Object} conn: MariaDB connection object
  */
 const createTables = async (conn) => {
-  let descQuery = `
+  await conn.query(`
     CREATE TABLE descriptions (
       product_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
       title TEXT,
       description TEXT
     )
-  `;
-  let genresQuery = `
+  `);
+  await conn.query(`
     CREATE TABLE genres (
       id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
       name TINYTEXT
     )
-  `;
-  let gamesGenresQuery = `
+  `);
+  await conn.query(`
     CREATE TABLE games_genres (
       id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
       product_id INTEGER NOT NULL REFERENCES descriptions (product_id) ON DELETE CASCADE,
       genre_id INTEGER NOT NULL REFERENCES genres (id) ON DELETE CASCADE
     )
-  `;
-
-  await conn.query(descQuery);
-  await conn.query(genresQuery);
-  await conn.query(gamesGenresQuery);
+  `);
 }
 
 /**
@@ -123,7 +120,7 @@ const seed = async () => {
 
   let conn;
   try {
-    conn = await pool.getConnection();
+    conn = await db.getConnection();
     await conn.beginTransaction();
 
     console.log('Creating database...');
@@ -136,15 +133,22 @@ const seed = async () => {
     await insertData(csvDir || defaultCSVDirPath, conn);
 
     await conn.commit();
-    await pool.end();
+    await conn.end();
   } catch (err) {
     console.error(err);
-    await conn.rollback();
-    await pool.end();
+    conn && await conn.rollback();
+    conn && await conn.end();
     process.exit(1);
   }
 
-  process.exit(0);
+  if (process.env.NODE_ENV !== 'test') {
+    process.exit(0);
+  }
 }
 
-seed();
+exports.seed = seed;
+
+if (process.env.NODE_ENV !== 'test') {
+  seed();
+}
+
