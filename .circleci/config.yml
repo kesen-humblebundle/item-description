@@ -7,6 +7,7 @@ jobs:
         environment:
           DBNAME: item_descriptions
           MDBPORT: 3306
+          MDBUSER: root
           NODE_ENV: test
           CI: true
       - image: mariadb:10.3
