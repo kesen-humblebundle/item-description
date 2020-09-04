@@ -1,0 +1,54 @@
+id,name
+1,Platform
+2,Shooter
+3,Fighting
+4,Beat 'em up
+5,Stealth
+6,Survival
+7,Battle Royale
+8,Rhythm
+9,Survival Horror
+10,Metroidvania
+11,Text
+12,Graphic
+13,Visual Novel
+14,Interactive Movie
+15,Real-time 3D
+16,Action RPG
+17,MMORPG
+18,Roguelike
+19,Tactical RPG
+20,Sandbox RPG
+21,JRPG
+22,Monster Collection
+23,Simulation
+24,4X
+25,Artillery
+26,Auto Battler
+27,MOBA
+28,Real-Time Strategy
+29,Real-Time Tactics
+30,Tower Defense
+31,Turn-Based Strategy
+32,Turn-Based Tactics
+33,Wargame
+34,Racing
+35,Sports
+36,Competitive
+37,Board Game
+38,Card Game
+39,Casual
+40,Horror
+41,Logic
+42,MMO
+43,Mobile
+44,Party
+45,Programming
+46,Trivia
+47,Idle
+48,Narrative
+49,Sandbox
+50,Creative
+51,Open World
+52,Puzzle
+53,Mystery
