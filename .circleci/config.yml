@@ -8,6 +8,7 @@ jobs:
           DBNAME: item_descriptions
           MDBPORT: 3306
           MDBUSER: root
+          MDBPASS: ci_password
           NODE_ENV: test
           CI: true
       - image: mariadb:10.3
