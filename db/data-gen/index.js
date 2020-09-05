@@ -4,7 +4,7 @@ const { generateGenres } = require('./generateGenres');
 const { generateDescriptions } = require('./generateDescriptions');
 const { generateGamesGenres } = require('./generateGamesGenres');
 
-const defaultPath = path.resolve(__dirname, '..', 'csv');
+const defaultPath = path.resolve(__dirname, 'csv');
 
 const usageMessage =
 `Usage:
@@ -14,7 +14,7 @@ Config options:
   --overwrite   Whether to overwrite existing generated CSV data
                       [boolean]  [default: false]
   --outDir      Path to write CSV data to from project root
-                      [string]   [default: './data/csv']
+                      [string]   [default: './db/data-gen/csv']
   --numRecords  Number of CSV lines to generate for descriptions dataset. Games_genres dataset will be a multiple of this number.
                       [integer]  [default: 10000]  [range: 1 - 10000000]`;
 
@@ -136,6 +136,8 @@ const extractCLIArgs = () => {
  */
 const parseArgsAndRunDataGen = async () => {
   let { overwrite, outDir, numRecords } = await extractCLIArgs();
+  // Set outDir as originating from project root instead of db/data-gen/
+  outDir = path.resolve(__dirname, '..', '..', outDir);
   try {
     let files = await fs.promises.readdir(outDir);
     if (!overwrite && (files.includes('genres.csv') || files.includes('descriptions.csv') || files.includes('games_genres.csv'))) {

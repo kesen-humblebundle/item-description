@@ -5,23 +5,12 @@ const request = require('supertest');
 const { app, server } = require('../server');
 const descData = require("./fixtures/descriptions");
 const genreList = require('./fixtures/genres');
-const db = require('../data/db');
 
 // console.log = jest.fn(); // Suppress model & route console.logs in test command line display
 
 describe("server integration tests", () => {
-  beforeAll(() => {
-    return db.migrate.rollback()
-      .then(() => db.migrate.latest())
-      .then(() => db.seed.run());
-  });
-
-  afterAll((done) => {
-    server.close(() => {
-      return db.destroy()
-        .then(() => done())
-        .catch(() => done());
-    });
+  afterAll(async () => {
+    await server.close();
   });
 
   /***************************
@@ -48,6 +37,7 @@ describe("server integration tests", () => {
     });
 
     test("returns 400 when no product_id is provided", async () => {
+      console.error = jest.fn(); // Temporarily suppress route's console.error call
       await request(app)
         .get('/description')
         .expect(400);
@@ -59,7 +49,7 @@ describe("server integration tests", () => {
       let postBody = {
         title: 'Test game',
         description: 'This is a test game',
-        genres: ['Indie', 'Tabletop']
+        genres: ['Rhythm', 'MOBA']
       };
 
       await request(app)
@@ -98,7 +88,7 @@ describe("server integration tests", () => {
       let putBody = {
         title: 'Test game revised',
         description: 'This is a new test game description',
-        genres: ['Tabletop']
+        genres: ['Rhythm']
       };
 
       await request(app)
@@ -126,7 +116,7 @@ describe("server integration tests", () => {
     test('updates product & returns 200 when passed valid params and partial fields in body', async () => {
       let partialPut = {
         title: 'Test game revised 2',
-        genres: ['Indie']
+        genres: ['MOBA']
       };
 
       await request(app)
@@ -199,17 +189,20 @@ describe("server integration tests", () => {
     });
 
     test("returns 500 when passed an invalid product id", async () => {
+      console.error = jest.fn(); // Temporarily suppress route's console.error call
       await request(app)
         .get('/description/title/200')
         .expect(500);
     });
 
     test("returns 400 if no id is sent", async () => {
+      console.error = jest.fn(); // Temporarily suppress route's console.error call
       await request(app)
         .get('/description/title')
         .expect(400);
     });
   });
+
 
   /*********************
    * GENRE ROUTE TESTS *
@@ -249,47 +242,31 @@ describe("server integration tests", () => {
     test('adds a genre to an existing list of genres for a product & returns 201', async () => {
       await request(app)
         .post('/genre/1')
-        .send({ genre: 'Action' })
+        .send({ genre: 'Platform' })
         .set('Accept', 'application/json')
         .expect(201)
         .then(res => {
-          expect(res.text).toBe('Genre Action successfully added to product id 1');
+          expect(res.text).toBe('Genre Platform successfully added to product id 1');
         });
 
       await request(app)
         .get('/genre/1')
         .expect(200)
         .then(res => {
-          expect(res.body).toMatchObject(['Action', ...descData[0].genre]);
+          expect(res.body).toEqual(expect.arrayContaining(['Platform', ...descData[0].genre]));
         });
     });
 
     test('returns 400 and a list of valid genres if genre already exists for product', async () => {
+      console.error = jest.fn(); // Temporarily suppress route's console.error call
       await request(app)
         .post('/genre/1')
-        .send({ genre: 'Action' })
+        .send({ genre: 'Shooter' })
         .set('Accept', 'application/json')
         .expect(400)
         .then(res => {
-          expect(res.body).toMatchObject({
-            error: 'Genre Action already exists for product id 1.',
-            validGenres: [
-              "FPS",
-              "Indie",
-              "MMO",
-              "Multiplayer",
-              "Puzzle",
-              "Racing",
-              "Retro",
-              "RPG",
-              "Simulation",
-              "Sports",
-              "Stealth",
-              "Strategy",
-              "Tabletop",
-              "Virtual Reality"
-            ]
-          });
+          expect(res.body.error).toBe('Genre Shooter already exists for product id 1.');
+          expect(res.body.validGenres).toEqual(expect.arrayContaining(genreList.filter(genre => !['Shooter', 'Platform'].includes(genre))));
         });
     });
 
@@ -318,11 +295,11 @@ describe("server integration tests", () => {
     test('deletes an existing genre from a product & returns 200', async () => {
       await request(app)
         .delete('/genre/1')
-        .send({ genre: 'Action' })
+        .send({ genre: 'Platform' })
         .set('Accept', 'application/json')
         .expect(200)
         .then(res => {
-          expect(res.text).toBe('Genre Action successfully removed from product id 1');
+          expect(res.text).toBe('Genre Platform successfully removed from product id 1');
         });
 
       await request(app)
@@ -334,16 +311,17 @@ describe("server integration tests", () => {
     });
 
     test('returns 400 and list of valid genres if genre does not exist for product', async () => {
+      console.error = jest.fn(); // Temporarily suppress route's console.error call
       await request(app)
         .delete('/genre/1')
-        .send({ genre: 'Action' })
+        .send({ genre: 'Platform' })
         .set('Accept', 'application/json')
         .expect(400)
         .then(res => {
           expect(res.body).toMatchObject({
-            error: 'Genre Action doesn\'t exist for product id 1.',
+            error: 'Genre Platform doesn\'t exist for product id 1.',
             validGenres: [
-              "Adventure"
+              'Shooter'
             ]
           });
         });

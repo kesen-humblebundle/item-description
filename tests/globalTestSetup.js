@@ -1,4 +1,5 @@
-const knex = require('knex');
+require('dotenv').config();
+const mariaDB = require('mariadb');
 
 /**
  * Create a Postgres connection through knex via connecting to PG superuser db, then create the relevant test database from there.
@@ -7,27 +8,24 @@ const knex = require('knex');
  * with subsequent testing.
  */
 const createDB = async () => {
-  const dbConnection = knex({
-    client: 'postgres',
-    debug: true,
-    connection: {
-      host: '127.0.0.1',
-      database: 'postgres',
-      port: '5432',
-      password: '',
-      user: 'postgres'
-    }
+  let conn = await mariaDB.createConnection({
+    host: process.env.MDBHOST,
+    user: process.env.MDBUSER,
+    password: process.env.MDBPASS,
+    port: process.env.MDBPORT,
+    permitLocalInfile: true
   });
 
   try {
-    await dbConnection.raw('CREATE DATABASE desc_service_test');
+    await conn.query('CREATE DATABASE IF NOT EXISTS item_descriptions_test');
   } catch (e) {
     console.error(e);
   } finally {
-    await dbConnection.destroy();
+    await conn.end();
   }
 }
 
 module.exports = async () => {
   await createDB();
+  await require('../db/seedMariaDB').seed();
 }

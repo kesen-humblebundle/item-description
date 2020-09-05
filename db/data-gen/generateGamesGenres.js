@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { convertObjToCSV, getRandomInRange } = require('./utils');
 
 /**
@@ -9,35 +10,48 @@ const { convertObjToCSV, getRandomInRange } = require('./utils');
  * @returns {Promise->Boolean}
  */
 exports.generateGamesGenres = async (numRecords, numGenres, outDir) => {
-  const stream = fs.createWriteStream(`${outDir}/games_genres.csv`);
+  // Remove existing games_genres_<index>.csv files
+  let files = await fs.promises.readdir(outDir);
+  files = files.filter(file => /games_genres_*\d*\.csv/.test(file));
+  files.forEach(file => fs.unlink(path.join(outDir, file), (err) => {
+    if (err) throw err;
+  }));
 
-  // Declare listeners
-  stream.on('error', err => {
-    throw err;
-  });
-
-  stream.on('close', () => {
-    console.log(`\nGames_genres file generated. Check ${outDir}\\games_genres.csv.`);
-  });
-
-  stream.on('open', () => {
-    console.log(`\nWriting ${numRecords} games_genres id pairs to file. For 10M records, this will take around 2 minutes. Please wait...`);
-  });
-
-  // Write headers
-  let keys = ['id', 'product_id', 'genre_id'];
-  stream.write(`${keys.join(',')}\r\n`);
-
-  let usedGenres = [];
+  console.log(`\nWriting ${numRecords} games_genres id pairs to file. For 10M records, this will take around 2 minutes. Please wait...`);
   let id = 1;
-  // Loop through numRecords, writing each to file, waiting for write buffer to drain every time it fills
+  let fileId = 1;
+  let keys = ['id', 'product_id', 'genre_id'];
+  let stream;
+  const ROW_LIMIT = 1e5;
+
+  // Loop through numRecords, writing each to file with a limit of 100000 rows,
+  // waiting for write buffer to drain every time it fills
   for (let i = 0; i < numRecords; i++) {
+
+    // Create a new file stream every 100000 records
+    if (i % ROW_LIMIT === 0) {
+      stream && stream.end();
+      stream = fs.createWriteStream(`${outDir}/games_genres_${fileId}.csv`);
+
+      // Declare listeners
+      stream.on('error', err => {
+        throw err;
+      });
+
+      // Write headers
+      stream.write(`${keys.join(',')}\r\n`);
+
+      fileId++;
+    }
+
+    let usedGenres = [];
+
     // For each record, generate 3-5 genre pairs and convert to CSV before storing
     let csvLinesForRecord = [];
     let genreCount = getRandomInRange(3, 5);
     usedGenres.length = 0;
 
-    for (let j = 0; j < genreCount; j++) {
+    for (let k = 0; k < genreCount; k++) {
       let genreId;
 
       do {
@@ -62,8 +76,9 @@ exports.generateGamesGenres = async (numRecords, numGenres, outDir) => {
         resolve();
       }));
     }
-  } // end for loop
+  } // end for loop numFiles
 
-  stream.end();
+  stream && stream.end();
+  console.log(`\n${numRecords % ROW_LIMIT === 0 ? fileId - 1 : fileId} games_genres files of <=${ROW_LIMIT} records each generated. Check ${outDir}\\games_genres_<index>.csv.`);
   return true;
 }

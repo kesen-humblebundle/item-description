@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { convertObjToCSV, generatePhrase, generateSentence } = require('./utils');
 
 /**
@@ -8,28 +9,37 @@ const { convertObjToCSV, generatePhrase, generateSentence } = require('./utils')
  * @returns {Promise->Boolean}
  */
 exports.generateDescriptions = async (numRecords, outDir) => {
-  const stream = fs.createWriteStream(`${outDir}/descriptions.csv`);
+  // Remove existing descriptions_<index>.csv files
+  let files = await fs.promises.readdir(outDir);
+  files = files.filter(file => /descriptions_*\d*\.csv/.test(file));
+  files.forEach(file => fs.unlink(path.join(outDir, file), (err) => {
+    if (err) throw err;
+  }));
 
-  // Declare listeners
-  stream.on('error', err => {
-    throw err;
-  });
-
-  stream.on('close', () => {
-    console.log(`\nDescriptions file generated. Check ${outDir}\\descriptions.csv.`);
-  });
-
-  stream.on('open', () => {
-    console.log(`\nWriting ${numRecords} descriptions to file. For 10M records, this will take around 4 minutes. Please wait...`);
-  });
-
-
-  // Write headers
+  console.log(`\nWriting ${numRecords} descriptions to file. For 10M records, this will take around 4 minutes. Please wait...`);
+  let fileId = 1;
   let keys = ['id', 'title', 'description'];
-  stream.write(`${keys.join(',')}\r\n`);
+  let stream;
 
   // Loop through numRecords, writing each to file, waiting for write buffer to drain every time it fills
   for (let i = 0; i < numRecords; i++) {
+
+    // Create a new file stream every 10000 records
+    if (i % 10000 === 0) {
+      stream && stream.end();
+      stream = fs.createWriteStream(`${outDir}/descriptions_${fileId}.csv`);
+
+      // Declare listeners
+      stream.on('error', err => {
+        throw err;
+      });
+
+      // Write headers
+      stream.write(`${keys.join(',')}\r\n`);
+
+      fileId++;
+    }
+
     // Generate record as object
     let record = {
       id: i + 1,
@@ -54,6 +64,7 @@ exports.generateDescriptions = async (numRecords, outDir) => {
     }
   } // end for loop
 
-  stream.end();
+  stream && stream.end();
+  console.log(`\n${numRecords % 10000 === 0 ? fileId - 1 : fileId} descriptions files of <= 10000 records each generated. Check ${outDir}\\descriptions_<index>.csv.`);
   return true;
 }

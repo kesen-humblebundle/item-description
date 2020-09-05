@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(cors());
 }
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use("/description/title", titleRoutes);
 app.use("/description/", descriptionRoutes);
@@ -27,11 +27,11 @@ app.use("/genre", genreRoutes);
 app.get("/bundle", (req, res) => {
   res
     .type("application/javascript")
-    .sendFile(path.join(__dirname, "public", "bundle.js"));
+    .sendFile(path.join(__dirname, '..', 'public', 'bundle.js'));
 });
 
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 const server = app.listen(process.env.PORT || 3003, () => {

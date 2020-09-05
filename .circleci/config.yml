@@ -4,15 +4,17 @@ jobs:
     working_directory: ~/item-description
     docker:
       - image: circleci/node:12.14.0
-        environment: 
-          PGHOST: 127.0.0.1
-          PGUSER: postgres
-          NODE_ENV: test
-      - image: postgres:12.3
         environment:
-          POSTGRES_HOST_AUTH_METHOD: trust
-    environment:
-      NODE_ENV: test
+          DBNAME: item_descriptions
+          MDBPORT: 3306
+          MDBUSER: root
+          MDBPASS: ci_password
+          NODE_ENV: test
+          CI: true
+      - image: mariadb:10.3
+        environment:
+          MYSQL_ROOT_PASSWORD: ci_password
+          MYSQL_DATABASE: item_descriptions_test
     steps:
       - checkout
       - run:
@@ -28,8 +30,8 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          name: wait-for-postgres
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+          name: wait-for-mariadb
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
       - run:
           name: test
           command: npm run test
