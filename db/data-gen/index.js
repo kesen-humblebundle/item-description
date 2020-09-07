@@ -1,10 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const { generateGenres } = require('./generateGenres');
-const { generateDescriptions } = require('./generateDescriptions');
-const { generateGamesGenres } = require('./generateGamesGenres');
+const { generateDescriptions, generateDescriptionsForRaven } = require('./generateDescriptions');
+const { generateGamesGenres, generateGamesGenresForRaven } = require('./generateGamesGenres');
 
-const defaultPath = path.resolve(__dirname, 'csv');
+const defaultPath = process.env.DB === 'ravendb' ?
+  path.resolve(__dirname, 'raven-csv') :
+  path.resolve(__dirname, 'csv');
 
 const usageMessage =
 `Usage:
@@ -140,13 +142,19 @@ const parseArgsAndRunDataGen = async () => {
   outDir = path.resolve(__dirname, '..', '..', outDir);
   try {
     let files = await fs.promises.readdir(outDir);
-    if (!overwrite && (files.includes('genres.csv') || files.includes('descriptions.csv') || files.includes('games_genres.csv'))) {
+    if (!overwrite && (files.includes('genres.csv') || files.includes('descriptions_1.csv') || files.includes('games_genres_1.csv'))) {
       throw new Error(`\nError: Some or all files already generated. Check ${outDir}.\n`);
     }
 
-    await generateGenres(genres, outDir);
-    await generateDescriptions(numRecords, outDir);
-    await generateGamesGenres(numRecords, genres.length, outDir);
+    await generateGenres(genres, outDir, process.env.DB === 'ravendb');
+    if (process.env.DB === 'ravendb') {
+      await generateDescriptionsForRaven(numRecords, outDir);
+      await generateGamesGenresForRaven(numRecords, genres.length, outDir);
+    } else {
+      await generateDescriptions(numRecords, outDir);
+      await generateGamesGenres(numRecords, genres.length, outDir);
+    }
+
   } catch (e) {
     console.error(e.message);
     console.error(usageMessage);

@@ -4,9 +4,10 @@ const fs = require('fs');
  * Generates an input array of genres as a CSV file at outDir
  * @param {Array[String]} genres
  * @param {String} outDir
+ * @param {Boolean} isRavenDB: if true, create csv file slightly differently to allow smooth addition to Raven database
  * @returns {Promise->Boolean}
  */
-exports.generateGenres = async (genres, outDir) => {
+exports.generateGenres = async (genres, outDir, isRavenDB) => {
   return new Promise((resolve, reject) => {
     let stream = fs.createWriteStream(`${outDir}/genres.csv`);
 
@@ -19,9 +20,9 @@ exports.generateGenres = async (genres, outDir) => {
     });
 
     // Write CSV header, then body
-    stream.write('id,name\r\n');
+    stream.write(`${isRavenDB ? '@' : ''}id,name${isRavenDB ? ',@metadata.@collection' : ''}\r\n`);
     genres.forEach((genre, idx) => {
-      stream.write(`${idx + 1},${genre}\r\n`);
+      stream.write(`${isRavenDB ? 'Genres/' : ''}${idx + 1},${genre}${isRavenDB ? ',Genres' : ''}\r\n`);
     });
     stream.end();
   });

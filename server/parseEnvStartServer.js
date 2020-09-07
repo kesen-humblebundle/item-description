@@ -6,7 +6,7 @@ const usageMessage =
 
 Config options:
   --db        Database to start server with, REQUIRED
-                  [enum, one of: 'mariadb', 'couchdb']
+                  [enum, one of: 'mariadb', 'ravendb']
   --env       NODE_ENV to start server with
                   [enum, one of: 'development', 'production', 'test']   [default: 'development']
   --nodemon   If present, starts the server child process with nodemon instead of node
@@ -32,7 +32,7 @@ const parseAndStartServer = () => {
   // Exec child process with flags passed as env vars
   // (execSync instead, since async .exec seems not to pipe stdout to the same terminal -- need to research later)
   if (
-    !['mariadb', 'couchdb'].includes(db) ||
+    !['mariadb', 'ravendb'].includes(db) ||
     !['development', 'production', 'test'].includes(env) ||
     !['true', 'false'].includes(useNodemon)
   ) {

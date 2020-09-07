@@ -1,13 +1,6 @@
 const express = require("express");
 const routes = express();
-let db;
-if (process.env.DB === 'mariadb') {
-  db = require('../../db/models/mariaDB_descriptions');
-} else if (process.env.DB === 'couchdb') {
-  db = require(/* TODO */);
-} else {
-  throw new Error('DB env var not specified');
-}
+const db = require('../../db/models/mariaDB_descriptions');
 
 routes.use(express.Router());
 
