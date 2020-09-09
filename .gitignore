@@ -4,3 +4,4 @@ bundle.js
 bundle.js.map
 
 db/data-gen/csv/*.csv
+db/data-gen/raven-csv/*.csv
