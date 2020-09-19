@@ -46,7 +46,7 @@ exports.getTitleByPID = async (product_id) => {
 const addGenreForPIDAsTransaction = async (product_id, genre, conn) => {
   let genreId = await conn.query(`
     SELECT id FROM genres
-    WHERE name='${genre}'
+    WHERE name="${genre}"
   `);
 
   if (!genreId) {
@@ -102,7 +102,7 @@ exports.addDescription = async (title, description, genres) => {
   try {
     let okPacket = await conn.query(`
       INSERT INTO descriptions (title, description)
-      VALUES ('${title}', '${description}')
+      VALUES ("${title}", "${description}")
     `);
 
     for (let i = 0; i < genres.length; i++) {
@@ -176,9 +176,9 @@ exports.updateDescriptionForPID = async (product_id, title = null, description =
 
       await conn.query(`
         UPDATE descriptions
-        SET ${title ? `title='${title}'` : ''}
+        SET ${title ? `title="${title}"` : ''}
         ${title && description ? ',' : ''}
-        ${description ? `description='${description}'` : ''}
+        ${description ? `description="${description}"` : ''}
         WHERE product_id=${product_id}
       `);
     }
