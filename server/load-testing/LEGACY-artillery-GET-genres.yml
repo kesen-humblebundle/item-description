@@ -1,0 +1,21 @@
+config:
+  target: "http://localhost:3003"
+  phases:
+    # Since 1, 10, or 100 RPS do not pose a problem to the server currently, they won't be tested for a
+    # long period of time. Instead, the script will focus on stress testing the range from 100 - 1k RPS.
+    - duration: 300 #5min
+      arrivalRate: 100
+      rampTo: 1000
+      name: Ramp to 1000 RPS
+    - duration: 300 #5min
+      arrivalRate: 1000
+      name: Sustain 1000 RPS
+  payload:
+    path: "productIds.csv"
+    fields:
+      - "product_id"
+scenarios:
+  - name: "Get genres"
+    flow:
+      - get:
+         url: "/genre/{{ product_id }}"
