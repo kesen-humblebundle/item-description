@@ -3,6 +3,7 @@ const path = require('path');
 const { generateGenres } = require('./generateGenres');
 const { generateDescriptions, generateDescriptionsForRaven } = require('./generateDescriptions');
 const { generateGamesGenres, generateGamesGenresForRaven } = require('./generateGamesGenres');
+const genres = require('./genres.js');
 
 const defaultPath = process.env.DB === 'ravendb' ?
   path.resolve(__dirname, 'raven-csv') :
@@ -19,63 +20,6 @@ Config options:
                       [string]   [default: './db/data-gen/csv']
   --numRecords  Number of CSV lines to generate for descriptions dataset. Games_genres dataset will be a multiple of this number.
                       [integer]  [default: 10000]  [range: 1 - 10000000]`;
-
-// Extracted & simplified genres from: https://en.wikipedia.org/wiki/List_of_video_game_genres
-const genres = [
-  'Platform',
-  'Shooter',
-  'Fighting',
-  'Beat \'em up',
-  'Stealth',
-  'Survival',
-  'Battle Royale',
-  'Rhythm',
-  'Survival Horror',
-  'Metroidvania',
-  'Text',
-  'Graphic',
-  'Visual Novel',
-  'Interactive Movie',
-  'Real-time 3D',
-  'Action RPG',
-  'MMORPG',
-  'Roguelike',
-  'Tactical RPG',
-  'Sandbox RPG',
-  'JRPG',
-  'Monster Collection',
-  'Simulation',
-  '4X',
-  'Artillery',
-  'Auto Battler',
-  'MOBA',
-  'Real-Time Strategy',
-  'Real-Time Tactics',
-  'Tower Defense',
-  'Turn-Based Strategy',
-  'Turn-Based Tactics',
-  'Wargame',
-  'Racing',
-  'Sports',
-  'Competitive',
-  'Board Game',
-  'Card Game',
-  'Casual',
-  'Horror',
-  'Logic',
-  'MMO',
-  'Mobile',
-  'Party',
-  'Programming',
-  'Trivia',
-  'Idle',
-  'Narrative',
-  'Sandbox',
-  'Creative',
-  'Open World',
-  'Puzzle',
-  'Mystery'
-];
 
 /**
  * Extracts the CLI args passed as the args field in `npm run data:gen [args]`,

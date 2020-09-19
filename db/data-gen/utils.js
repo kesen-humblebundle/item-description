@@ -1,4 +1,4 @@
-const { nouns, adjectives, adverbs, verbs } = require('./wordBank');
+const { nouns, adjectives, adverbs, verbs } = require('./wordBank.js');
 
 /**
  * Convert an object to a single csv line
