@@ -1,0 +1,9 @@
+node_modules
+.git
+test
+**/data-gen/*
+server/load-testing/*
+.eslintrc.js
+jest.config.js
+README.md
+appspec.yml

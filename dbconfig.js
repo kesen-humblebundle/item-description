@@ -16,7 +16,10 @@ module.exports = {
       password: process.env.CI ? 'ci_password' : process.env.MDBPASS,
       database: process.env.DBNAME + '_test'
     },
-    production: mariaBaseConfig,
+    production: {
+      ...mariaBaseConfig,
+      host: process.env.DB_IP
+    },
   },
   ravendb: {
     development: { database: process.env.DBNAME },

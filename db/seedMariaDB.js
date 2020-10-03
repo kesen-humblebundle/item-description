@@ -7,7 +7,7 @@ const db = require('./mariadb');
 
 let defaultCSVDirPath = process.env.NODE_ENV === 'test' ?
   path.resolve(__dirname, '..', 'tests', 'fixtures') :
-  path.resolve(__dirname, 'data-gen', 'csv');
+  path.resolve(__dirname, '..', 'csv');
 
 /**
  * Creates the 'item_descriptions' or 'item_descriptions_test' database,

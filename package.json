@@ -13,15 +13,14 @@
     "seed:maria": "cross-env NODE_ENV=development node db/seedMariaDB.js",
     "seed:raven": "cross-env NODE_ENV=development node db/seedRavenDB.js",
     "raven:data:gen": "cross-env DB=ravendb npm run data:gen --overwrite --numRecords=10000000",
-    "start": "node server/index.js my-app",
+    "start": "cross-env NODE_ENV=production DB=mariadb DB_IP=3.131.105.170 node server/index.js",
     "stop": "killall -SIGINT my-app",
     "build": "webpack --env.NODE_ENV=production --mode=production",
     "react:dev": "webpack --watch --env.NODE_ENV=development --mode=development",
     "data:gen": "node db/data-gen/index.js",
     "load-test:get-srvc": "k6 run -o influxdb=\"http://localhost:8086/Sdc\" server/load-testing/get1000RPS.srvc.k6.js",
     "load-test:post-srvc-desc": "k6 run -o influxdb=\"http://localhost:8086/Sdc\" server/load-testing/postDesc1000RPS.srvc.k6.js",
-    "load-test:post-srvc-genre": "k6 run -o influxdb=\"http://localhost:8086/Sdc\" server/load-testing/postGenre1000RPS.srvc.k6.js",
-    "load-test:get-proxy": "k6 run -o influxdb=\"http://localhost:8086/Sdc\" server/load-testing/get1000RPS.prxy.k6.js"
+    "load-test:post-srvc-genre": "k6 run -o influxdb=\"http://localhost:8086/Sdc\" server/load-testing/postGenre1000RPS.srvc.k6.js"
   },
   "repository": {
     "type": "git",
