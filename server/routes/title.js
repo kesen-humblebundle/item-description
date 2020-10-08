@@ -30,7 +30,7 @@ routes.get("/:product_id", fetchFromCache, async (req, res) => {
     if (!title.length || !title[0].title) {
       return res.status(404).send("Invalid product id.");
     }
-    await setCache(req.originalUrl, title[0].title);
+    setCache(req.originalUrl, title[0].title);
     return res.status(200).send(title[0].title);
   } catch (err) {
     console.error(err);

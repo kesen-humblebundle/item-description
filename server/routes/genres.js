@@ -63,9 +63,9 @@ routes.post('/:product_id', async (req, res) => {
   try {
     await db.addGenreToProduct(product_id, genre);
     // If genre added successfully, invalidate description cache
-    await invalidateCache(`/description/${product_id}`);
+    invalidateCache(`/description/${product_id}`);
     // Also invalidate genre endpoint itself, as new genre was added
-    await invalidateCache(req.originalUrl);
+    invalidateCache(req.originalUrl);
     res.status(201).send(`Genre ${genre} successfully added to product id ${product_id}`);
   } catch (e) {
     console.error(e);
@@ -91,9 +91,9 @@ routes.delete('/:product_id', async (req, res) => {
   try {
     await db.removeGenreFromProduct(product_id, genre);
     // If genre deleted successfully, invalidate description cache
-    await invalidateCache(`/description/${product_id}`);
+    invalidateCache(`/description/${product_id}`);
     // Also invalidate genre endpoint itself, as a genre was removed
-    await invalidateCache(req.originalUrl);
+    invalidateCache(req.originalUrl);
     res.status(200).send(`Genre ${genre} successfully removed from product id ${product_id}`);
   } catch (e) {
     console.error(e);

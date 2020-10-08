@@ -25,7 +25,7 @@ routes.get("/:product_id", fetchFromCache, async (req, res) => {
     }
 
     // If no 400 or 500 errors, store key-val pair in server cache
-    await setCache(req.originalUrl, JSON.stringify(description));
+    setCache(req.originalUrl, JSON.stringify(description));
     return res.status(200).send(description);
   } catch (err) {
     console.error(err);
@@ -68,9 +68,9 @@ routes.delete('/:product_id', async (req, res) => {
   try {
     await db.deleteDescriptionByPID(product_id);
     // After successful deletion, invalidate key-val pair for descriptions AND genre/title caches, if exists
-    await invalidateCache(req.originalUrl);
-    await invalidateCache(`/genre/${product_id}`);
-    await invalidateCache(`/description/title/${product_id}`);
+    invalidateCache(req.originalUrl);
+    invalidateCache(`/genre/${product_id}`);
+    invalidateCache(`/description/title/${product_id}`);
     res.status(200).send(`Successfully deleted product description with id ${product_id}`);
   } catch (e) {
     console.error(e);
@@ -95,9 +95,9 @@ routes.put('/:product_id', async (req, res) => {
   try {
     await db.updateDescriptionForPID(product_id, title, description, genres);
     // After successful update, invalidate key-val pair for description AND genre/title, if exists
-    await invalidateCache(req.originalUrl);
-    await invalidateCache(`/genre/${product_id}`);
-    await invalidateCache(`/description/title/${product_id}`);
+    invalidateCache(req.originalUrl);
+    invalidateCache(`/genre/${product_id}`);
+    invalidateCache(`/description/title/${product_id}`);
     res.status(200).send(`Successfully updated product description with id ${product_id}`);
   } catch (e) {
     console.error(e);
