@@ -1,10 +1,11 @@
 const express = require("express");
 const routes = express();
 const db = require('../../db/models/mariaDB_descriptions');
+const { fetchFromCache, setCache } = require('../redisMethods');
 
 routes.use(express.Router());
 
-routes.get("/", async (req, res) => {
+routes.get("/", fetchFromCache, async (req, res) => {
   let { id } = req.query;
   if (!id || id.length <= 0) {
     return res.status(400).send("A valid product ID is required.");
@@ -16,7 +17,7 @@ routes.get("/", async (req, res) => {
   res.status(200).send(titles);
 });
 
-routes.get("/:product_id", async (req, res) => {
+routes.get("/:product_id", fetchFromCache, async (req, res) => {
   const product_id = parseInt(req.params.product_id);
 
   if (Number.isNaN(product_id) || product_id < 1) {
@@ -29,6 +30,7 @@ routes.get("/:product_id", async (req, res) => {
     if (!title.length || !title[0].title) {
       return res.status(404).send("Invalid product id.");
     }
+    await setCache(req.originalUrl, title[0].title);
     return res.status(200).send(title[0].title);
   } catch (err) {
     console.error(err);
